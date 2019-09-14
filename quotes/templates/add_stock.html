@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content%}
+<h1>Add Stock...</h1>
+<br/>
+
+<!-- 添加可以在此頁面加股票到DB的功能 -->
+<!-- 把網頁右上角那個搜尋框框的form貼過來改 -->
+
+<form action="{% url 'add_stock' %}" class="form-inline my-2 my-lg-0" method="POST">
+        <!-- 上面這行添加action，設定按鈕要做的動作，此處是連結到home page -->
+        {% csrf_token %}
+        <!-- placeholder:顯示在框框裡面的淺色文字。csrf_token:防駭客用，在form裡面都要加 -->
+      <input class="form-control mr-sm-2" type="search" placeholder="type ticker here" 
+      aria-label="Search" name="ticker">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Add Stock to DB</button>
+    </form> 
+<br/><br/>
+
+<!-- 去bootstrap網站找喜歡的table樣式(在content下)，貼到下面即可建表格，若要改樣式就在下面這行的class裡面加 -->
+<table class="table table-striped table-bordered  table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Company Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Previous Close</th>
+        <th scope="col">Market Cap</th>
+        <th scope="col">YTD Change</th>
+        <th scope="col">52Week high</th>
+        <th scope="col">52Week Low</th>
+      </tr>
+    </thead>
+    <tbody>
+
+{% if ticker %}
+
+
+  {% for list_item in output %}
+    <tr>
+      <th scope="row">{{ list_item.companyName }}</th>
+      <td>${{ list_item.latestPrice }}</td>
+      <td>${{ list_item.previousClose }}</td>
+      <td>${{ list_item.marketCap }}</td>
+      <td>{{ list_item.ytdChange }}%</td>
+      <td>${{ list_item.week52High }}</td>
+      <td>${{ list_item.week52Low }}</td>
+    </tr>
+  
+  {% endfor %}
+         
+
+    <!-- 做一個超連結，連結到delete function，並傳入item.id -->
+
+
+
+  </tbody>
+</table>
+{% endif %}
+<br/>
+
+<!-- 此html的ticker是由views.py裡訂好的add_stock function傳過來的 -->
+
+
+{% endblock %}
