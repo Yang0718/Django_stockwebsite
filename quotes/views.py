@@ -36,12 +36,12 @@ def add_stock(request):
         if form.is_valid():
             form.save()
             messages.success(request, ("Stock has been Added successfully"))
-            return redirect('add_stock') # redirect:重新導向其他頁面，只是在此處是導向自己目前頁面
+            return redirect('add_stock') # redirect:重新導向其他頁面
 
     else:
         ticker = StockDB.objects.all() # 把建好的StockDB裡面全部的東西都叫出來
         output=[]
-        for ticker_item in ticker: # 用for loop把ticker裡面的所有股票一個個叫出來
+        for ticker_item in ticker: # 把ticker裡面的所有股票一個個叫出來
             api_request = requests.get("https://cloud.iexapis.com/stable/stock/"+ str(ticker_item) +"/quote?token=pk_6a5adede513a4469a9044fdc3ed4bc23")
             try:
                 api = json.loads(api_request.content)
@@ -52,7 +52,7 @@ def add_stock(request):
 
 def delete(request, stock_id):
     item = StockDB.objects.get(pk=stock_id) # pk:primary key
-    item.delete() # 這行就能把資料從Db刪掉了
+    item.delete() # 一行就能把資料從Db刪掉了
     messages.success(request, ("Stock has been deleted"))
     return redirect(delete_stock)
 
